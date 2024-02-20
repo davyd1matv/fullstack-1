@@ -15,7 +15,6 @@ export default function Container() {
   const [message, setMessage] = useState("");
   const [data, setData] = useState(null);
 
-  //уточнити про async в gemini
   const getData = async () => {
     setStatus(LOAD_STATUS.PROGRESS);
 
