@@ -48,7 +48,7 @@ export default function Container() {
       date: getDate(date),
     })),
 
-    iEmpty: raw.list.length === 0,
+    isEmpty: raw.list.length === 0,
   });
 
   if (status === null) {

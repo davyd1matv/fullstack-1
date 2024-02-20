@@ -96,6 +96,7 @@ export default function Container({ id, username, text, date }) {
                 onCreate={getData}
               />
             </Box>
+
             {status === LOAD_STATUS.PROGRESS && (
               <Fragment>
                 <Box>

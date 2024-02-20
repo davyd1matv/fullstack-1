@@ -14,6 +14,7 @@ const { Post } = require('../class/post')
 router.post('/post-create', function (req, res) {
   try {
     const { username, text, postId } = req.body
+
     if (!username || !text) {
       return res.status(400).json({
         message:
@@ -58,7 +59,7 @@ router.get('/post-list', function (req, res) {
     const list = Post.getList()
 
     if (list.length === 0) {
-      return res.status(400).json({
+      return res.status(200).json({
         list: [],
       })
     }
@@ -66,8 +67,8 @@ router.get('/post-list', function (req, res) {
     return res.status(200).json({
       list: list.map(({ id, username, text, date }) => ({
         id,
-        text,
         username,
+        text,
         date,
       })),
     })
@@ -80,7 +81,7 @@ router.get('/post-list', function (req, res) {
 
 router.get('/post-item', function (req, res) {
   try {
-    const id = req.query
+    const { id } = req.query
 
     if (!id) {
       return res.status(400).json({

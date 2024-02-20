@@ -18,7 +18,7 @@ class Post {
     if (post) {
       post.reply.push(newPost)
 
-      console.log(newPost)
+      console.log(post)
     } else {
       this.#list.push(newPost)
     }
@@ -38,4 +38,6 @@ class Post {
   static getList = () => this.#list
 }
 
-module.exports = { Post }
+module.exports = {
+  Post,
+}
