@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 
 import Title from "../../component/title";
 import Grid from "../../component/grid";
@@ -9,6 +9,7 @@ import PostItem from "../post-item";
 
 import { Skeleton, LOAD_STATUS, Alert } from "../../component/load";
 import { getDate } from "../../util/getDate";
+import { useWindowListenter } from "../../util/useWindowListenter";
 
 export default function Container() {
   const [status, setStatus] = useState(null);
@@ -50,12 +51,59 @@ export default function Container() {
     isEmpty: raw.list.length === 0,
   });
 
+  //Урок 5
+  useEffect(() => {
+    // alert("render");
+    // getData();
+
+    getData();
+
+    // const intervalId = setInterval(() => getData(), 5000);
+
+    // setInterval(() => alert(123), 5000); // Працює не коректно
+
+    ///=====
+
+    // const intervalId = setInterval(() => alert(123), 5000);
+
+    // alert(1);
+
+    return () => {
+      //   clearInterval(intervalId);
+      //   alert(1);
+    };
+  }, []);
+  //
+
   if (status === null) {
     getData();
   }
 
+  // Урок 5
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useWindowListenter("pointermove", (e) => {
+    setPosition({ x: e.clientX, y: e.clientY });
+  });
+  //
+
   return (
     <Grid>
+      <div
+        style={{
+          position: "absolute",
+          backgroundColor: "pink",
+          borderRadius: "50%",
+          opacity: 0.6,
+          transorm: `translate(${position.x}px, ${position.y}px)`,
+          pointerEvents: "none",
+          left: -20,
+          top: -20,
+          width: 40,
+          height: 40,
+        }}
+      />
+
       <Box>
         <Grid>
           <Title>Home</Title>

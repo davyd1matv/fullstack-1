@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 
 import "./index.css";
 
@@ -62,12 +62,23 @@ export default function Container({ id, username, text, date }) {
   const [isOpen, setOpen] = useState(false);
 
   const handleOpen = () => {
-    if (status === null) {
-      getData();
-    }
+    // if (status === null) {
+    //   getData();
+    // }
+    // Так як нижче прописали через useEffect
 
     setOpen(!isOpen);
   };
+
+  //Урок 5
+  useEffect(() => {
+    // alert(isOpen);
+    if (isOpen === true && status === null) {
+      //   alert(isOpen);
+      getData();
+    }
+  }, [isOpen]);
+  //
 
   return (
     <Box style={{ padding: "0" }}>
