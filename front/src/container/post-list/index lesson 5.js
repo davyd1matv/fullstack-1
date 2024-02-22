@@ -51,9 +51,33 @@ export default function Container() {
     isEmpty: raw.list.length === 0,
   });
 
-  //   if (status === null) {
-  //     getData();
-  //   }
+  //Урок 5
+  useEffect(() => {
+    // alert("render");
+    // getData();
+
+    getData();
+
+    // const intervalId = setInterval(() => getData(), 5000);
+
+    // setInterval(() => alert(123), 5000); // Працює не коректно
+
+    ///=====
+
+    // const intervalId = setInterval(() => alert(123), 5000);
+
+    // alert(1);
+
+    return () => {
+      //   clearInterval(intervalId);
+      //   alert(1);
+    };
+  }, []);
+  //
+
+  if (status === null) {
+    getData();
+  }
 
   // Урок 5
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -61,8 +85,6 @@ export default function Container() {
   useWindowListenter("pointermove", (e) => {
     setPosition({ x: e.clientX, y: e.clientY });
   });
-  //
-
   //
 
   return (

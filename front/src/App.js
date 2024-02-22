@@ -1,89 +1,153 @@
-import { useState, useEffect } from "react"; //Редаговано для Урока 5
+import { useReducer } from "react"; //Редаговано для Урока 5
+
+// Lesson 6
 
 import React from "react";
 import Page from "./component/page";
-import PostList from "./container/post-list";
+import Grid from "./component/grid";
+import Box from "./component/box";
+// import PostList from "./container/post-list";
+
+const LIST_ACTION_TYPE = {
+  ADD: "add",
+  DELETE: "delete",
+  SELECT: "select",
+  REVERSE: "reverse",
+};
+
+function listReducer(state, action) {
+  //   if (!action.payload) throw new Error("need action.payload");
+
+  switch (action.type) {
+    case LIST_ACTION_TYPE.ADD:
+      const id = new Date().getTime();
+
+      const newItem = { value: action.payload, id };
+
+      return {
+        ...state,
+        // items: [...state.items, { value: action, id: new Date().getTime() }],
+        items: [...state.items, newItem],
+      };
+
+    case LIST_ACTION_TYPE.DELETE:
+      const newItems = state.items.filter((item) => item.id !== action.payload);
+
+      return {
+        ...state,
+        items: newItems,
+      };
+
+    case LIST_ACTION_TYPE.SELECT:
+      return {
+        ...state,
+        selectedId: action.payload === state.selectedId ? null : action.payload,
+      };
+
+    case LIST_ACTION_TYPE.REVERSE:
+      return {
+        ...state,
+        items: state.items.reverse(),
+      };
+
+    default:
+      return { ...state };
+  }
+  //   console.log(state, action);
+
+  //   return { ...state, items: [...state.items, action] };
+  //   return {
+  //     ...state,
+  //     items: [...state.items, { value: action, id: new Date().getTime() }],
+  //   };
+}
+
+const initState = { items: [] };
 
 function App() {
-  //   const [isHidden, setHidden] = useState();
+  const init = (state) => {
+    if (state.items && state.items.length === 0) {
+      return {
+        ...state,
+        items: [...state.items, { id: 444111, value: "first item" }],
+      };
+    } else {
+      return state;
+    }
+  };
+  console.log("render");
 
-  //   useEffect(() => {
-  //     setTimeout(() => setHidden(true));
-  //   }, []);
+  const [state, dispatch] = useReducer(listReducer, initState, init);
 
-  //   const [count, setCount] = useState(0);
-  //
-  // Шматок коду нижче є частою проблемою Новачків.
-  // Код будевиконуватися постійно та їсти багато ресурсів комп'ютера,
-  // що призведе до його зависання
-  // useEffect(() => {
-  // 	setCount(count + 1);
-  // });
+  const handleAddItem = (e) => {
+    const { value } = e.target;
 
-  // Наступний код робить коло навколо курсора
+    if (value.trim() === "") return null;
 
-  //   useEffect(() => {
-  //     function handleMove(e) {
-  //       setPosition({ x: e.clientX, y: e.clientY });
-  //     }
+    // dispatch(value);
+    dispatch({ type: LIST_ACTION_TYPE.ADD, payload: value });
 
-  //     window.addEventListener("pointermove", handleMove);
+    e.target.value = "";
+  };
 
-  //     return () => {
-  //       window.removeEventListener("pointermove", handleMove);
-  //     };
-  //   }, []);
+  //   const handleRemoveItem = (id) => dispatch(id);
+  const handleRemoveItem = (id) =>
+    dispatch({ type: LIST_ACTION_TYPE.DELETE, payload: id });
 
-  //=====
+  const handleSelectItem = (id) =>
+    dispatch({ type: LIST_ACTION_TYPE.SELECT, payload: id });
 
-  //   const [location, setLocation] = useState(null);
+  const handleReverseItems = () => dispatch({ type: LIST_ACTION_TYPE.REVERSE });
 
-  //   useEffect(() => {
-  //     if ("geolocation" in navigator) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           const { latitude, longitude } = position.coords;
-  //           setLocation({ latitude, longitude });
-  //         },
-  //         (error) => {
-  //           console.error("Помилка отримання геолокації:", error.message);
-  //         }
-  //       );
-  //     } else {
-  //       console.error("Геолокація не підтримуєтсья в цьомму браузері.");
-  //     }
-  //   }, []);
+  console.log(state);
 
   return (
     <Page>
-      {/* {isHidden !== true && <PostList />} */}
-      {/*  */}
-      <PostList />
-
-      {/* <div
-        style={{
-          position: "absolute",
-          backgroundColor: "pink",
-          borderRadius: "50%",
-          opacity: 0.6,
-          transorm: `translate(${position.x}px, ${position.y}px)`,
-          pointerEvents: "none",
-          left: -20,
-          top: -20,
-          width: 40,
-          height: 40,
-        }}
-      /> */}
-
-      {/* {location ? (
-        <div>
-          <h2>Ваша геолокація:</h2>
-          <p>Широта: {location.latuitude}</p>
-          <p>Довгота: {location.longitude}</p>
-        </div>
-      ) : (
-        <p>Отримання геолокації...</p>
-      )} */}
+      <Grid>
+        <Box>
+          <Grid>
+            <h1>Список еементів:</h1>
+            <ul>
+              <Grid>
+                {state.items.map(({ value, id }) => (
+                  <li onClick={() => handleSelectItem(id)} key={id}>
+                    <Box
+                      style={{
+                        borderColor:
+                          state.selectedId === id ? "blue" : "#e6e6e6",
+                      }}
+                    >
+                      <Grid>
+                        <span>{value}</span>
+                        <Box>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveItem(id);
+                            }}
+                          >
+                            Видалити
+                          </button>
+                        </Box>
+                      </Grid>
+                    </Box>
+                  </li>
+                ))}
+              </Grid>
+            </ul>
+          </Grid>
+        </Box>
+        <Box>
+          <input
+            onBlur={handleAddItem}
+            type="text"
+            placeholder="Введіть новий елемент"
+          />
+        </Box>
+        <Box>
+          <button onClick={handleReverseItems}>Змінити порядок</button>
+        </Box>
+      </Grid>
     </Page>
   );
 }
