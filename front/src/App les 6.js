@@ -1,4 +1,4 @@
-import { useRef } from "react"; //Редаговано для Урока 5
+import { useReducer } from "react"; //Редаговано для Урока 5
 
 // Lesson 6
 
@@ -7,6 +7,54 @@ import Page from "./component/page";
 import Grid from "./component/grid";
 import Box from "./component/box";
 import PostList from "./container/post-list";
+
+// const LIST_ACTION_TYPE = {
+//   ADD: "add",
+//   DELETE: "delete",
+//   SELECT: "select",
+//   REVERSE: "reverse",
+// };
+
+// function listReducer(state, action) {
+//   //   if (!action.payload) throw new Error("need action.payload");
+//   //   switch (action.type) {
+//   //     case LIST_ACTION_TYPE.ADD:
+//   //       const id = new Date().getTime();
+//   //       const newItem = { value: action.payload, id };
+//   //       return {
+//   //         ...state,
+//   //         // items: [...state.items, { value: action, id: new Date().getTime() }],
+//   //         items: [...state.items, newItem],
+//   //       };
+//   //     case LIST_ACTION_TYPE.DELETE:
+//   //       const newItems = state.items.filter((item) => item.id !== action.payload);
+//   //       return {
+//   //         ...state,
+//   //         items: newItems,
+//   //       };
+//   //     case LIST_ACTION_TYPE.SELECT:
+//   //       return {
+//   //         ...state,
+//   //         selectedId: action.payload === state.selectedId ? null : action.payload,
+//   //       };
+//   //     case LIST_ACTION_TYPE.REVERSE:
+//   //       return {
+//   //         ...state,
+//   //         items: [...state.items].reverse(),
+//   //       };
+//   //     default:
+//   //       return { ...state };
+//   //   }
+//   //
+//   //   console.log(state, action);
+//   //   return { ...state, items: [...state.items, action] };
+//   //   return {
+//   //     ...state,
+//   //     items: [...state.items, { value: action, id: new Date().getTime() }],
+//   //   };
+// }
+
+// const initState = { items: [] };
 
 function App() {
   //   const init = (state) => {
