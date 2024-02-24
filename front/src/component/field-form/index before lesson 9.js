@@ -1,8 +1,8 @@
-import { useState, memo } from "react";
+import { useState } from "react";
 
 import "./index.css";
 
-function Component({ placeholder, button, onSubmit }) {
+export default function Component({ placeholder, button, onSubmit }) {
   const [value, setValues] = useState("");
 
   const handleChange = (e) => setValues(e.target.value);
@@ -40,5 +40,3 @@ function Component({ placeholder, button, onSubmit }) {
     </div>
   );
 }
-
-export default memo(Component);

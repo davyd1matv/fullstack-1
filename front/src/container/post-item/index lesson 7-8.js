@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect, useReducer, useCallback } from "react";
+import { useState, Fragment, useEffect, useReducer } from "react";
 
 import "./index.css";
 
@@ -26,7 +26,7 @@ export default function Container({ id, username, text, date }) {
 
   console.log(state);
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     dispatch({ type: REQUEST_ACTION_TYPE.PROGRESS });
 
     try {
@@ -53,7 +53,7 @@ export default function Container({ id, username, text, date }) {
         payload: error.message,
       });
     }
-  }, [state.data.id]);
+  };
 
   const convertData = ({ post }) => ({
     id: post.id,

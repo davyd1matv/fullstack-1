@@ -1,19 +1,11 @@
-import {
-  useState,
-  Fragment,
-  useEffect,
-  useReducer,
-  lazy,
-  Suspense,
-  useCallback,
-} from "react";
+import { useState, Fragment, useEffect, useReducer } from "react";
 
 import Title from "../../component/title";
 import Grid from "../../component/grid";
 import Box from "../../component/box";
 
 import PostCreate from "../post-create";
-// import PostItem from "../post-item";
+import PostItem from "../post-item";
 
 import { Skeleton, LOAD_STATUS, Alert } from "../../component/load";
 import { getDate } from "../../util/getDate";
@@ -23,8 +15,6 @@ import {
   requestInitialState,
   requestReducer,
 } from "../../util/request";
-
-const PostItem = lazy(() => import("../post-item"));
 
 export default function Container() {
   const [state, dispatch] = useReducer(requestReducer, requestInitialState);
@@ -57,7 +47,7 @@ export default function Container() {
   //     }
   //   };
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     dispatch({ type: REQUEST_ACTION_TYPE.PROGRESS });
 
     try {
@@ -82,7 +72,7 @@ export default function Container() {
         payload: error.message,
       });
     }
-  }, []);
+  };
 
   const convertData = (raw) => ({
     list: raw.list.reverse().map(({ id, username, text, date }) => ({
@@ -134,15 +124,8 @@ export default function Container() {
           ) : (
             state.data.list.map((item) => (
               <Fragment key={item.id}>
-                <Suspense
-                  fallback={
-                    <Box>
-                      <Skeleton />
-                    </Box>
-                  }
-                >
-                  <PostItem {...item} />
-                </Suspense>
+                {/* {item.username} - {item.date} */}
+                <PostItem {...item} />
               </Fragment>
             ))
           )}
