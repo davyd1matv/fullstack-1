@@ -12,6 +12,10 @@
   transition: opacity 0.4s;
 }
 
+.field-form__button--dark {
+  background-color: #6785c4;
+}
+
 .field-from__button:disabled {
   cursor: default;
   opacity: 0.7 !important;
